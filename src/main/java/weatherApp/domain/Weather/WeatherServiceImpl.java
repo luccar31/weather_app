@@ -2,10 +2,12 @@ package weatherApp.domain.Weather;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import weatherApp.domain.Location.Location;
-import weatherApp.infrastructure.Location.LocationRepository;
+import org.springframework.web.client.RestTemplate;
+import weatherApp.domain.Location.WeatherLocation;
 import weatherApp.infrastructure.Weather.WeatherRepository;
 
 import java.lang.reflect.Type;
@@ -16,33 +18,51 @@ import java.util.List;
 public class WeatherServiceImpl implements WeatherService {
 
     private WeatherRepository weatherRepository;
-    private LocationRepository locationRepository;
 
-    public WeatherServiceImpl(WeatherRepository weatherRepository, LocationRepository locationRepository){
+    @Autowired
+    public WeatherServiceImpl(WeatherRepository weatherRepository){
         this.weatherRepository = weatherRepository;
-        this.locationRepository = locationRepository;
     }
 
-
-    //recibir json
-    //convertirlo a objetos
-    //persistirlos en la base de datos
     @Override
-    public void processJson(String json) {
-        Gson gson = new Gson();
-        Type locationListType = new TypeToken<List<Location>>(){}.getType();
+    public List<WeatherLocation> getAllLocations() {
+        return weatherRepository.getAll();
+    }
 
-        List<Location> locationList = gson.fromJson(json, locationListType);
-
-        for (var location : locationList){
-            locationRepository.persistOrUpdate(location);
+    //tarea cada 5 minutos
+    //llamar a la api, devuelve json
+    //procesar json, devuelve lista de objetos
+    //persistir o actualizar objetos
+    public void scheduledTask(String url){
+        String json = callWeatherApi(url);
+        List<WeatherLocation> weatherLocationList = getListFromJson(json);
+        persistEntities(weatherLocationList);
+    }
+    @Override
+    public void persistEntities(List<WeatherLocation> weatherLocationList) {
+        for (var weatherLocation : weatherLocationList){
+            weatherRepository.persistOrUpdate(weatherLocation);
         }
     }
 
-    @Override
-    public List<Location> getAllLocations() {
-        return locationRepository.getAll();
+    public List<WeatherLocation> getListFromJson(String json) {
+        Gson gson = new Gson();
+        Type weatherLocationListType = new TypeToken<List<WeatherLocation>>(){}.getType();
+
+        List<WeatherLocation> weatherLocationList = gson.fromJson(json, weatherLocationListType);
+        return weatherLocationList;
     }
 
+    @Override
+    public String callWeatherApi(String url){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
 
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        return response.getBody();
+    }
 }

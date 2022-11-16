@@ -1,20 +1,20 @@
 package weatherApp.domain.Location;
 
-import weatherApp.domain.Weather.Weather;
+import weatherApp.domain.Weather.WeatherDetails;
 
 import javax.persistence.*;
 
 @Entity
-public class Location {
+public class WeatherLocation {
     @Id
     private String id;
     private String name;
     private String province;
 
     @OneToOne(fetch = FetchType.EAGER)
-    private Weather weather;
+    private WeatherDetails weatherDetails;
 
-    public Location(){}
+    public WeatherLocation(){}
 
     public String getId() {
         return id;
@@ -40,11 +40,11 @@ public class Location {
         this.province = province;
     }
 
-    public Weather getWeather() {
-        return weather;
+    public WeatherDetails getWeather() {
+        return weatherDetails;
     }
 
-    public void setWeather(Weather weather) {
-        this.weather = weather;
+    public void setWeather(WeatherDetails weatherDetails) {
+        this.weatherDetails = weatherDetails;
     }
 }

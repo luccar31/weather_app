@@ -1,11 +1,13 @@
 package weatherApp.domain.Weather;
 
-import weatherApp.domain.Location.Location;
+import weatherApp.domain.Location.WeatherLocation;
 
 import java.util.List;
 
 public interface WeatherService {
-    void processJson(String json);
+    void persistEntities(List<WeatherLocation> list);
 
-    List<Location> getAllLocations();
+    List<WeatherLocation> getAllLocations();
+
+    String callWeatherApi(String url);
 }

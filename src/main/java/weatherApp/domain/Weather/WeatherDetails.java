@@ -1,18 +1,16 @@
 package weatherApp.domain.Weather;
 
-import weatherApp.domain.Location.Location;
-
 import javax.persistence.*;
 
 @Entity
-public class Weather {
+public class WeatherDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     Double temperature;
 
-    public Weather(){}
+    public WeatherDetails(){}
 
     public Long getId() {
         return id;
