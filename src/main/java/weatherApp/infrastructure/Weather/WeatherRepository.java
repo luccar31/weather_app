@@ -1,6 +1,6 @@
 package weatherApp.infrastructure.Weather;
 
-import weatherApp.domain.Location.WeatherLocation;
+import weatherApp.domain.Weather.WeatherLocation;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import weatherApp.domain.Location.WeatherLocation;
+import weatherApp.domain.Weather.WeatherLocation;
 
 import java.util.List;
 
