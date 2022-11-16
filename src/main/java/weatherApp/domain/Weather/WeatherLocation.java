@@ -1,7 +1,6 @@
-package weatherApp.domain.Location;
+package weatherApp.domain.Weather;
 
 import com.google.gson.annotations.SerializedName;
-import weatherApp.domain.Weather.WeatherDetails;
 
 import javax.persistence.*;
 

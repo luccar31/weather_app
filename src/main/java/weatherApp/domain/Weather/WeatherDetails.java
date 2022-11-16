@@ -1,5 +1,7 @@
 package weatherApp.domain.Weather;
 
+import com.google.gson.annotations.SerializedName;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +9,7 @@ public class WeatherDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    @SerializedName("temp")
     Double temperature;
 
     public WeatherDetails(){}
