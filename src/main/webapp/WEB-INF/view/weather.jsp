@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="es">
@@ -9,6 +10,13 @@
     <title>Weather</title>
 </head>
 <body>
-
+    <c:forEach var="location" items="weatherList" >
+        <div>
+            <p>${location.getId()}</p>
+            <p>${location.getlocName()}</p>
+            <p>${location.getProvince}</p>
+            <p>${location.getWeatherDetails().getTemp()}</p>
+        </div>
+    </c:forEach>
 </body>
 </html>

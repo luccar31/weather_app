@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="es">
 <head>
@@ -9,7 +11,17 @@
     <title>Home</title>
 </head>
 <body class="container">
-	<h1>Hola</h1>
+	<h1>Hola! El timer está:</h1>
+    <h3>
+    <c:choose>
+        <c:when test="${activated}">
+            activado
+        </c:when>
+        <c:otherwise>
+            desactivado
+        </c:otherwise>
+    </c:choose>
+    </h3>
 </body>
 <script src="js/bootstrap.js"></script>
 </html>

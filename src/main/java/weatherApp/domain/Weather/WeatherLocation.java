@@ -10,11 +10,12 @@ public class WeatherLocation {
     @SerializedName("_id")
     private String id;
     @SerializedName("name")
-    private String name;
+    private String locName;
     @SerializedName("province")
     private String province;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_idWeather")
     @SerializedName("weather")
     private WeatherDetails weatherDetails;
 
@@ -28,12 +29,12 @@ public class WeatherLocation {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLocName() {
+        return locName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLocName(String setLocName) {
+        this.locName = setLocName;
     }
 
     public String getProvince() {

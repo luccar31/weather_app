@@ -26,6 +26,7 @@ public class WeatherController {
 
     @RequestMapping(path = "/")
     public ModelAndView goHome(){
+        ModelMap model = new ModelMap();
 
         //TODO: extract to outside method
         if(!activated){
@@ -40,10 +41,12 @@ public class WeatherController {
             activated = true;
         }
 
-        return new ModelAndView("home");
+        model.put("activated", activated);
+
+        return new ModelAndView("home", model);
     }
 
-    @RequestMapping(path = "/weather", method = RequestMethod.POST)
+    @RequestMapping(path = "/weather", method = RequestMethod.GET)
     public ModelAndView showWeather(){
         ModelMap model = new ModelMap();
 
