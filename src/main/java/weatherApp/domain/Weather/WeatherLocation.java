@@ -1,5 +1,6 @@
 package weatherApp.domain.Location;
 
+import com.google.gson.annotations.SerializedName;
 import weatherApp.domain.Weather.WeatherDetails;
 
 import javax.persistence.*;
@@ -7,11 +8,15 @@ import javax.persistence.*;
 @Entity
 public class WeatherLocation {
     @Id
+    @SerializedName("_id")
     private String id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("province")
     private String province;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @SerializedName("weather")
     private WeatherDetails weatherDetails;
 
     public WeatherLocation(){}
