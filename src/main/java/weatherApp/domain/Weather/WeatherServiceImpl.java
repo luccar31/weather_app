@@ -11,6 +11,7 @@ import weatherApp.infrastructure.Weather.WeatherRepository;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 
 @Service("weatherService")
 @Transactional
@@ -51,12 +52,37 @@ public class WeatherServiceImpl implements WeatherService {
         Type weatherLocationListType = new TypeToken<List<WeatherLocation>>(){}.getType();
 
         List<WeatherLocation> weatherLocationList = gson.fromJson(json, weatherLocationListType);
+
         return weatherLocationList;
     }
 
     public void persistEntities(List<WeatherLocation> weatherLocationList) {
         for (var weatherLocation : weatherLocationList){
-            weatherRepository.persistOrUpdate(weatherLocation);
+            WeatherLocation weatherLocationDB = weatherRepository.getByApiId(weatherLocation.getApiId());
+
+            if(weatherLocationDB == null){
+                weatherRepository.persist(weatherLocation);
+            }
+            else{
+                if(!temperatureHasntChanged(weatherLocation, weatherLocationDB))
+                    updateTemperature(weatherLocation, weatherLocationDB);
+            }
         }
+    }
+
+    private boolean temperatureHasntChanged(WeatherLocation weatherLocation, WeatherLocation weatherLocationDB) {
+        Double storedTemperature = weatherLocationDB.getWeatherDetails().getTemperature();
+        Double temperatureFromApi = weatherLocation.getWeatherDetails().getTemperature();
+
+        return Objects.equals(temperatureFromApi, storedTemperature);
+    }
+
+    private void updateTemperature(WeatherLocation weatherLocationDB, WeatherLocation weatherLocationApi) {
+        WeatherDetails weatherDetailsDB = weatherLocationDB.getWeatherDetails();
+        WeatherDetails weatherDetailsApi = weatherLocationApi.getWeatherDetails();
+
+        weatherDetailsDB.setTemperature( weatherDetailsApi.getTemperature() );
+
+        weatherRepository.update(weatherDetailsDB);
     }
 }

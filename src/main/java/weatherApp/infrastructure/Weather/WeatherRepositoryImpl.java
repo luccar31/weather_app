@@ -3,8 +3,10 @@ package weatherApp.infrastructure.Weather;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import weatherApp.domain.Weather.WeatherDetails;
 import weatherApp.domain.Weather.WeatherLocation;
 
 import java.util.List;
@@ -16,9 +18,32 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     SessionFactory sessionFactory;
 
     @Override
-    public void persistOrUpdate(WeatherLocation weatherLocation) {
+    public WeatherLocation getById(Long id){
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(weatherLocation);
+        return session.get(WeatherLocation.class, id);
+    }
+    //se asume que el "_id" del json es unico
+    @Override
+    public WeatherLocation getByApiId(String apiId){
+        Session session = sessionFactory.getCurrentSession();
+        Criteria cr = session.createCriteria(WeatherLocation.class);
+        cr.add(Restrictions.eq("apiId", apiId));
+        if (cr.list().size() == 0)
+            return null;
+
+        return (WeatherLocation) cr.list().get(0);
+    }
+    @Override
+    public void persist(WeatherLocation weatherLocation){
+        Session session = sessionFactory.getCurrentSession();
+        session.save(weatherLocation.getWeatherDetails());
+        session.save(weatherLocation);
+    }
+
+    @Override
+    public void update(WeatherDetails weatherDetails){
+        Session session = sessionFactory.getCurrentSession();
+        session.update(weatherDetails);
     }
 
     @Override

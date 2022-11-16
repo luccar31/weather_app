@@ -6,9 +6,13 @@ import javax.persistence.*;
 
 @Entity
 public class WeatherLocation {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @SerializedName("_id")
-    private String id;
+    private String apiId;
     @SerializedName("name")
     private String locName;
     @SerializedName("province")
@@ -20,14 +24,6 @@ public class WeatherLocation {
     private WeatherDetails weatherDetails;
 
     public WeatherLocation(){}
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getLocName() {
         return locName;
@@ -45,11 +41,27 @@ public class WeatherLocation {
         this.province = province;
     }
 
-    public WeatherDetails getWeather() {
+    public WeatherDetails getWeatherDetails() {
         return weatherDetails;
     }
 
-    public void setWeather(WeatherDetails weatherDetails) {
+    public void setWeatherDetails(WeatherDetails weatherDetails) {
         this.weatherDetails = weatherDetails;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(String apiId) {
+        this.apiId = apiId;
     }
 }

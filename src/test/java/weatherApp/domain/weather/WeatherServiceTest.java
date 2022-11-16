@@ -30,6 +30,27 @@ public class WeatherServiceTest {
     }
 
     @Test
+    public void givenUrl_thenRequest_resultString(){
+        String url = "https://ws.smn.gob.ar/map_items/weather";
+        String json = weatherService.callWeatherApi(url);
+        assertNotNull(json);
+    }
+
+    @Test
+    public void givenJsonString_parseToObjectList_resultCorrectObjectList(){
+        String jsonList = getJsonList();
+        List<WeatherLocation> weatherLocationList = weatherService.getListFromJson(jsonList);
+        assertEquals(2, weatherLocationList.size());
+        assertEquals("609de7b1364a909f83b25f46", weatherLocationList.get(0).getApiId());
+        assertEquals(16D, weatherLocationList.get(0).getWeatherDetails().getTemperature(), 0.001);
+    }
+
+    @Test
+    public void test(){
+
+    }
+
+    @Test
     public void givenJson_thenConvertToJavaObject_resultCorrectJavaObject(){
         String jsonString = getJson();
         WeatherLocation weatherLocation = convertToJavaObject(jsonString);
@@ -45,10 +66,10 @@ public class WeatherServiceTest {
 
     private void assertCorrectObjectList(List<WeatherLocation> weatherLocationList) {
         assertEquals(weatherLocationList.size(), 2);
-        assertEquals(weatherLocationList.get(0).getId(), "609de7b1364a909f83b25f46");
-        assertNotNull(weatherLocationList.get(0).getWeather());
-        assertEquals(weatherLocationList.get(1).getId(), "609de7b1364a909f83b25f47");
-        assertNotNull(weatherLocationList.get(1).getWeather());
+        assertEquals(weatherLocationList.get(0).getApiId(), "609de7b1364a909f83b25f46");
+        assertNotNull(weatherLocationList.get(0).getWeatherDetails());
+        assertEquals(weatherLocationList.get(1).getApiId(), "609de7b1364a909f83b25f47");
+        assertNotNull(weatherLocationList.get(1).getWeatherDetails());
     }
 
     private List<WeatherLocation> convertToListOfJavaObject(String jsonString) {
@@ -76,9 +97,9 @@ public class WeatherServiceTest {
     }
 
     private void assertCorrectObject(WeatherLocation weatherLocation) {
-        WeatherDetails weatherDetails =  weatherLocation.getWeather();
+        WeatherDetails weatherDetails =  weatherLocation.getWeatherDetails();
 
-        assertEquals(weatherLocation.getId(), "609de7b1364a909f83b25f46");
+        assertEquals(weatherLocation.getApiId(), "609de7b1364a909f83b25f46");
         assertEquals(weatherDetails.getTemperature(), 16D, 0.001);
     }
 

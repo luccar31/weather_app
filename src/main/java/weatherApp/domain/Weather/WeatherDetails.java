@@ -8,9 +8,9 @@ import javax.persistence.*;
 public class WeatherDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @SerializedName("temp")
-    Double temperature;
+    private Double temperature;
 
     public WeatherDetails(){}
 
