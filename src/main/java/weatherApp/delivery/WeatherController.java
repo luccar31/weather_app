@@ -9,6 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 import weatherApp.domain.Weather.WeatherLocation;
 import weatherApp.domain.Weather.WeatherService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,6 +20,7 @@ public class WeatherController {
 
     private WeatherService weatherService;
     private Boolean activated = false;
+    private LocalDateTime lastUpdated;
 
     @Autowired
     public WeatherController(WeatherService weatherService){
@@ -33,6 +36,7 @@ public class WeatherController {
             TimerTask timerTask = new TimerTask() {
                 public void run() {
                     weatherService.scheduledTask("https://ws.smn.gob.ar/map_items/weather");
+                    lastUpdated = LocalDateTime.now();
                 }
             };
 
@@ -52,6 +56,7 @@ public class WeatherController {
 
         List<WeatherLocation> weatherLocationList = weatherService.getAllLocations();
 
+        model.put("lastUpdated", lastUpdated.toString());
         model.put("weatherList", weatherLocationList);
 
         return new ModelAndView("weather", model);
