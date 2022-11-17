@@ -5,7 +5,7 @@ import java.util.List;
 public interface WeatherService {
     List<WeatherLocation> getAllLocations();
 
-    void scheduledTask(String url);
+    void processApi(String url);
     String callWeatherApi(String url);
     List<WeatherLocation> getListFromJson(String json);
 

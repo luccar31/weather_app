@@ -27,12 +27,15 @@ public class WeatherControllerTest {
     }
 
     @Test
-    public void test(){
+    public void givenWeatherListAndModel_thenCallWeatherService_resultInGivenList(){
         List<WeatherLocation> weatherLocationList = givenWeatherLocationList();
         when(weatherServiceMock.getAllLocations()).thenReturn(weatherLocationList);
+
         ModelAndView mav = weatherController.showWeather();
-        List<WeatherLocation> x = (List<WeatherLocation>) mav.getModel().get("weatherList");
-        assertEquals(2, x.size());
+
+        List<WeatherLocation> listFromDB = (List<WeatherLocation>) mav.getModel().get("weatherList");
+
+        assertEquals(2, listFromDB.size());
     }
 
     private List<WeatherLocation> givenWeatherLocationList() {

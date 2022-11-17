@@ -37,21 +37,18 @@ public class WeatherServiceTest {
     }
 
     @Test
-    public void givenJsonString_parseToObjectList_resultCorrectObjectList(){
+    public void givenJson_thenCallWeatherService_resultCorrectWeatherLocationList(){
         String jsonList = getJsonList();
+
         List<WeatherLocation> weatherLocationList = weatherService.getListFromJson(jsonList);
+
         assertEquals(2, weatherLocationList.size());
         assertEquals("609de7b1364a909f83b25f46", weatherLocationList.get(0).getApiId());
         assertEquals(16D, weatherLocationList.get(0).getWeatherDetails().getTemperature(), 0.001);
     }
 
     @Test
-    public void test(){
-
-    }
-
-    @Test
-    public void givenJson_thenConvertToJavaObject_resultCorrectJavaObject(){
+    public void givenJson_thenConvertToWeatherLocation_resultCorrectWeatherLocation(){
         String jsonString = getJson();
         WeatherLocation weatherLocation = convertToJavaObject(jsonString);
         assertCorrectObject(weatherLocation);
@@ -75,8 +72,7 @@ public class WeatherServiceTest {
     private List<WeatherLocation> convertToListOfJavaObject(String jsonString) {
         Gson gson = new Gson();
         Type weatherLocationListType = new TypeToken<List<WeatherLocation>>(){}.getType();
-        List<WeatherLocation> weatherLocationList = gson.fromJson(jsonString, weatherLocationListType);
-        return weatherLocationList;
+        return gson.fromJson(jsonString, weatherLocationListType);
 
     }
 
@@ -92,8 +88,7 @@ public class WeatherServiceTest {
 
     private WeatherLocation convertToJavaObject(String jsonString) {
         Gson gson = new Gson();
-        WeatherLocation weatherLocation = gson.fromJson(jsonString, WeatherLocation.class);
-        return weatherLocation;
+        return gson.fromJson(jsonString, WeatherLocation.class);
     }
 
     private void assertCorrectObject(WeatherLocation weatherLocation) {

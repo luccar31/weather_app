@@ -29,20 +29,10 @@ public class WeatherController {
 
     @RequestMapping(path = "/")
     public ModelAndView goHome() throws InterruptedException {
+
         if(!activated){
-            TimerTask timerTask = new TimerTask() {
-                public void run() {
-                    weatherService.scheduledTask("https://ws.smn.gob.ar/map_items/weather");
-                    lastUpdated = LocalDateTime.now();
-                }
-            };
-
-            Timer timer = new Timer();
-            timer.scheduleAtFixedRate(timerTask, 1000, 1000 * 60 * 5);
-            activated = true;
+            setUpScheduler();
         }
-
-        Thread.sleep(3000);
 
         return new ModelAndView("redirect:/weather");
     }
@@ -62,5 +52,22 @@ public class WeatherController {
 
     private String getDateTimeFormated(String pattern, LocalDateTime localDateTime) {
         return DateTimeFormatter.ofPattern(pattern).format(localDateTime);
+    }
+
+    private void setUpScheduler() throws InterruptedException {
+        //como solo es una cosa puntual, considero que no es necesaria crear una clase
+        //puntual que implemente a timertask
+        TimerTask timerTask = new TimerTask() {
+            public void run() {
+                weatherService.processApi("https://ws.smn.gob.ar/map_items/weather");
+                lastUpdated = LocalDateTime.now();
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 1000, 1000 * 60 * 5);
+        activated = true;
+
+        Thread.sleep(3000);
     }
 }

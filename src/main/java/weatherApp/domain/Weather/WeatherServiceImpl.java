@@ -29,7 +29,7 @@ public class WeatherServiceImpl implements WeatherService {
         return weatherRepository.getAll();
     }
     @Override
-    public void scheduledTask(String url){
+    public void processApi(String url){
         String json = callWeatherApi(url);
         List<WeatherLocation> weatherLocationList = getListFromJson(json);
         persistEntities(weatherLocationList);
@@ -56,23 +56,24 @@ public class WeatherServiceImpl implements WeatherService {
         return weatherLocationList;
     }
 
-    public void persistEntities(List<WeatherLocation> weatherLocationList) {
-        for (var weatherLocation : weatherLocationList){
-            WeatherLocation weatherLocationDB = weatherRepository.getByApiId(weatherLocation.getApiId());
+    public void persistEntities(List<WeatherLocation> weatherApiList) {
+        for (var weatherApi : weatherApiList){
 
-            if(weatherLocationDB == null){
-                weatherRepository.persist(weatherLocation);
+            WeatherLocation weatherDB = weatherRepository.getByApiId( weatherApi.getApiId() );
+
+            if (weatherDB != null && !sameTemperature(weatherDB, weatherApi)) {
+                updateTemperature(weatherDB, weatherApi);
+                weatherRepository.update(weatherDB.getWeatherDetails());
             }
-            else{
-                if(!temperatureHasntChanged(weatherLocation, weatherLocationDB))
-                    updateTemperature(weatherLocation, weatherLocationDB);
+            else {
+                weatherRepository.persist(weatherApi);
             }
         }
     }
 
-    private boolean temperatureHasntChanged(WeatherLocation weatherLocation, WeatherLocation weatherLocationDB) {
+    private boolean sameTemperature(WeatherLocation weatherLocationDB, WeatherLocation weatherLocationApi) {
         Double storedTemperature = weatherLocationDB.getWeatherDetails().getTemperature();
-        Double temperatureFromApi = weatherLocation.getWeatherDetails().getTemperature();
+        Double temperatureFromApi = weatherLocationApi.getWeatherDetails().getTemperature();
 
         return Objects.equals(temperatureFromApi, storedTemperature);
     }
@@ -82,7 +83,5 @@ public class WeatherServiceImpl implements WeatherService {
         WeatherDetails weatherDetailsApi = weatherLocationApi.getWeatherDetails();
 
         weatherDetailsDB.setTemperature( weatherDetailsApi.getTemperature() );
-
-        weatherRepository.update(weatherDetailsDB);
     }
 }
