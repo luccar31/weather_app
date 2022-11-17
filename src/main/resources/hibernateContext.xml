@@ -4,7 +4,6 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
-
 	<bean id="dataSource"
 		  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
@@ -12,7 +11,6 @@
 		<property name="username" value="root" />
 		<property name="password" value="993103lucas" />
 	</bean>
-
 
 	<bean id="sessionFactory"
 		  class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
@@ -22,13 +20,10 @@
 			<props>
 				<prop key="hibernate.validator.apply_to_ddl">false</prop>
 				<prop key="hibernate.validator.autoregister_listeners">false</prop>
-
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
-
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
-
-				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 			</props>
 		</property>
 
@@ -38,7 +33,6 @@
 			</list>
 		</property>
 	</bean>
-
 
 	<bean id="transactionManager"
 		  class="org.springframework.orm.hibernate5.HibernateTransactionManager">

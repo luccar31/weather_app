@@ -15,17 +15,12 @@
 
 	<import resource="classpath:hibernateContext.xml" />
 
-
 	<mvc:annotation-driven />
 
-
 	<tx:annotation-driven transaction-manager="transactionManager" />
-
 
 	<context:component-scan base-package="weatherApp.delivery" />
 	<context:component-scan base-package="weatherApp.infrastructure" />
 	<context:component-scan base-package="weatherApp.domain" />
-	
-
 </beans>
 

@@ -9,8 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 import weatherApp.domain.Weather.WeatherLocation;
 import weatherApp.domain.Weather.WeatherService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,10 +28,7 @@ public class WeatherController {
     }
 
     @RequestMapping(path = "/")
-    public ModelAndView goHome(){
-        ModelMap model = new ModelMap();
-
-        //TODO: extract to outside method
+    public ModelAndView goHome() throws InterruptedException {
         if(!activated){
             TimerTask timerTask = new TimerTask() {
                 public void run() {
@@ -41,13 +38,13 @@ public class WeatherController {
             };
 
             Timer timer = new Timer();
-            timer.scheduleAtFixedRate(timerTask, 0, 1000 * 60 * 5);
+            timer.scheduleAtFixedRate(timerTask, 1000, 1000 * 60 * 5);
             activated = true;
         }
 
-        model.put("activated", activated);
+        Thread.sleep(3000);
 
-        return new ModelAndView("home", model);
+        return new ModelAndView("redirect:/weather");
     }
 
     @RequestMapping(path = "/weather", method = RequestMethod.GET)
@@ -56,9 +53,14 @@ public class WeatherController {
 
         List<WeatherLocation> weatherLocationList = weatherService.getAllLocations();
 
-        model.put("lastUpdated", lastUpdated.toString());
+
+        model.put("lastUpdated", getDateTimeFormated("dd-MM-yyyy HH:mm:ss", lastUpdated));
         model.put("weatherList", weatherLocationList);
 
         return new ModelAndView("weather", model);
+    }
+
+    private String getDateTimeFormated(String pattern, LocalDateTime localDateTime) {
+        return DateTimeFormatter.ofPattern(pattern).format(localDateTime);
     }
 }

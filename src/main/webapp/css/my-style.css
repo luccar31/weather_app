@@ -1,0 +1,12 @@
+.fancy-bg{
+    background-image: url("../images/vecteezy_clouds-seamless-pattern-weather-background-design-illustration_5500114(1).png");
+    background-repeat: repeat;
+}
+
+.sticky{
+    position: sticky;
+}
+
+.card-color{
+    background-color: #c7d7f1;
+}

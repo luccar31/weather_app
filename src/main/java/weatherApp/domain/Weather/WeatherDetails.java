@@ -2,7 +2,10 @@ package weatherApp.domain.Weather;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class WeatherDetails {
