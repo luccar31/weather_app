@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+//TODO: implementar patron DTO para no trata directamente con la entidad
+//https://www.oscarblancarteblog.com/2018/11/30/data-transfer-object-dto-patron-diseno/
 @Entity
 public class WeatherDetails {
     @Id

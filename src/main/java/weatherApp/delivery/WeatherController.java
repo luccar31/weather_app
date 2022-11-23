@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+//TODO: organizar los controlarores, servicios y entidades sus subpaquetes correspondientes
 @Controller
 public class WeatherController {
 
@@ -55,10 +56,10 @@ public class WeatherController {
     }
 
     private void setUpScheduler() throws InterruptedException {
-        //como solo es una cosa puntual, considero que no es necesaria crear una clase
-        //puntual que implemente a timertask
+        //TODO: extraer este timer task a una clase
         TimerTask timerTask = new TimerTask() {
             public void run() {
+                //TODO: extraer esta url a un archivo de configuracion para no tener que estar compilando toda la web cada vez que se hace un cambio
                 weatherService.processApi("https://ws.smn.gob.ar/map_items/weather");
                 lastUpdated = LocalDateTime.now();
             }
