@@ -61,9 +61,11 @@ public class WeatherServiceImpl implements WeatherService {
 
             WeatherLocation weatherDB = weatherRepository.getByApiId( weatherApi.getApiId() );
 
-            if (weatherDB != null && !sameTemperature(weatherDB, weatherApi)) {
-                updateTemperature(weatherDB, weatherApi);
-                weatherRepository.update(weatherDB.getWeatherDetails());
+            if (weatherDB != null) {
+                if(!sameTemperature(weatherDB, weatherApi)){
+                    updateTemperature(weatherDB, weatherApi);
+                    weatherRepository.update(weatherDB.getWeatherDetails());
+                }
             }
             else {
                 weatherRepository.persist(weatherApi);
