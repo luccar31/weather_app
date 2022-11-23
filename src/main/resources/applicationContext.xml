@@ -13,10 +13,8 @@
 						http://www.springframework.org/schema/tx	
 						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<import resource="classpath:hibernateContext.xml" />
 	<import resource="classpath:my-beans.xml"/>
-
-	<util:properties id="props" location="classpath:application.properties"/>
+	<import resource="classpath:hibernateContext.xml" />
 
 	<mvc:annotation-driven />
 
