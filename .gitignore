@@ -17,3 +17,7 @@ hs_err_pid*
 *.iml
 *.DS_Store
 /.java-version
+
+# properties files
+src/main/resources/application.properties
+src/main/resources/database.properties
